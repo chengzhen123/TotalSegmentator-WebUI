@@ -1,3 +1,30 @@
+
+# 运行步骤
+
+1. 根据官方README教程，安装环境。（我是按照官方提供的镜像  ```wasserth/totalsegmentator:2.13.0```来安装的环境）
+2. 下载模型文件，参考 官方 totalsegmentator/download_pretained_weithts.py
+3. 启动容器，注意 -v，我的示例如下：
+```commandline
+docker run -it \
+	--restart always \
+	-p 5000:5000 \
+	--gpus all \
+	--ipc=host \
+	--name totalsegmentator-server-job \
+	-v /data/TotalSegmentator-WebUI/store:/app/store \
+	-v /data/TotalSegmentator-WebUI/models:/root/.totalsegmentator  \
+	wasserth/totalsegmentator:2.13.0  bash 
+
+```
+其中 /data/TotalSegmentator/models 是安装官方的download_pretained_weithts.py下载的模型文件存放的本地位置
+
+4. 进入容器，在/app目录下，新建api_keys.txt 写入  admin:123456
+5. 执行 python run_server_web.py, 提示安装什么包，就安装什么包即可。
+
+![img.png](img.png)
+
+# 以下是TotalSegmentator官方README
+
 # TotalSegmentator
 
 Tool for segmentation of most major anatomical structures in any CT or MR image. It was trained on a wide range of different CT and MR images (different scanners, institutions, protocols,...) and therefore works well on most images. A large part of the training dataset can be downloaded here: [CT dataset](https://doi.org/10.5281/zenodo.6802613) (1228 subjects) and [MR dataset](https://zenodo.org/doi/10.5281/zenodo.11367004) (616 subjects). You can also try the tool online at [totalsegmentator.com](https://totalsegmentator.com/) or as [3D Slicer extension](https://github.com/lassoan/SlicerTotalSegmentator).
